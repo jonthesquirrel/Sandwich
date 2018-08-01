@@ -1,5 +1,7 @@
-package io.github.jonthesquirrel.sandwich
+package io.github.jonthesquirrel.sandwich;
 
-public class BukkitMain extends JavaPlugin {
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Sandwich extends JavaPlugin {
 
 }
