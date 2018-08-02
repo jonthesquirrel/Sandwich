@@ -74,15 +74,14 @@ public class Sandwich extends JavaPlugin implements Listener {
                 if (bottomLinks.containsKey(currentWorldName)) {
                     targetWorldName = bottomLinks.get(currentWorldName);
                     targetWorld = Bukkit.getServer().getWorld(targetWorldName);
-                    targetY = currentY + worldHeight;
+                    targetY = currentY + worldHeight + worldPadding;
                 }
             } else {
                 // go up
                 if (topLinks.containsKey(currentWorldName)) {
                     targetWorldName = topLinks.get(currentWorldName);
                     targetWorld = Bukkit.getServer().getWorld(targetWorldName);
-                    targetY = currentY - worldHeight;
-                    //add padding?
+                    targetY = currentY - worldHeight - worldPadding;
                 }
             }
             if (targetWorld != null) {
