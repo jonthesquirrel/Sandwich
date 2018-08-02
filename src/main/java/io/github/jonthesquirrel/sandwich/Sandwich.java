@@ -55,7 +55,6 @@ public class Sandwich extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        log.info(event.toString());
         int currentY = event.getTo().getBlockY();
         World currentWorld = event.getTo().getWorld();
         if (currentY < 0 || currentY > currentWorld.getMaxHeight()) {
@@ -68,14 +67,14 @@ public class Sandwich extends JavaPlugin implements Listener {
                 if (bottomLinks.containsKey(currentWorldName)) {
                     targetWorldName = bottomLinks.get(currentWorldName);
                     targetWorld = Bukkit.getServer().getWorld(targetWorldName);
-                    targetY = currentY - targetWorld.getMaxHeight();
+                    targetY = currentY + targetWorld.getMaxHeight();
                 }
             } else {
                 // go up
                 if (topLinks.containsKey(currentWorldName)) {
                     targetWorldName = topLinks.get(currentWorldName);
                     targetWorld = Bukkit.getServer().getWorld(targetWorldName);
-                    targetY = currentY + targetWorld.getMaxHeight();
+                    targetY = currentY - targetWorld.getMaxHeight();
                 }
             }
             if (targetWorld != null) {
