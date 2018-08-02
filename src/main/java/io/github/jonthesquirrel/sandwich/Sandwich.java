@@ -13,14 +13,18 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class Sandwich extends JavaPlugin {
 
     private FileConfiguration config;
     private Map<String, String> topLinks;
     private Map<String, String> bottomLinks;
+    private Logger log;
 
+    @Override
     public void onEnable() {
+        log = getLogger();
         //load config
         config = this.getConfig();
         //TODO don't allow keys with null values in top and bottom links maps (might cause problems with logic later)
@@ -43,7 +47,8 @@ public class Sandwich extends JavaPlugin {
 
             }
         }
-
+        log.info("config topLinks: " + topLinks.toString());
+        log.info("config bottomLinks: " + bottomLinks.toString());
     }
 
     @EventHandler
