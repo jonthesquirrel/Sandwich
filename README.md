@@ -1,2 +1,4 @@
 # Sandwich
-Connect Multiverse worlds vertically
+Connect worlds vertically
+
+[Downloads](https://github.com/jonthesquirrel/Sandwich/releases)
