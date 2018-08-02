@@ -86,8 +86,8 @@ public class Sandwich extends JavaPlugin implements Listener {
             }
             if (targetWorld != null) {
                 Player player = event.getPlayer();
-                int x = event.getTo().getBlockY();
-                int z = event.getTo().getBlockY();
+                int x = event.getTo().getBlockX();
+                int z = event.getTo().getBlockZ();
                 float yaw = event.getTo().getYaw();
                 float pitch = event.getTo().getPitch();
                 Vector velocity = event.getPlayer().getVelocity();
