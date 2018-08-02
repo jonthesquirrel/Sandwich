@@ -1,0 +1,9 @@
+worldPadding: 16
+worldTop: 255
+worldBottom: 0
+# example: name these according to your worlds - you can have any combination of top and bottom links
+# worlds:
+#   overworld:
+#     top: aether
+#   aether:
+#     bottom: overworld

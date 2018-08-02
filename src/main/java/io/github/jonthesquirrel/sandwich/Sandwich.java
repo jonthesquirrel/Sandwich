@@ -22,14 +22,21 @@ public class Sandwich extends JavaPlugin implements Listener {
     private Map<String, String> topLinks;
     private Map<String, String> bottomLinks;
     private Logger log;
+    private int worldPadding;
+    private int worldTop;
+    private int worldBottom;
+    private int worldHeight;
 
     @Override
     public void onEnable() {
         log = getLogger();
         getServer().getPluginManager().registerEvents(this, this);
-        //load config
+        saveDefaultConfig();
         config = this.getConfig();
-        //TODO don't allow keys with null values in top and bottom links maps (might cause problems with logic later)
+        worldPadding = config.getInt("worldPadding");
+        worldTop = config.getInt("worldTop");
+        worldBottom = config.getInt("worldBottom");
+        worldHeight = worldTop - worldBottom;
         topLinks = new HashMap<String, String>();
         bottomLinks = new HashMap<String, String>();
         if (config.getConfigurationSection("worlds") == null) {
@@ -56,25 +63,26 @@ public class Sandwich extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         int currentY = event.getTo().getBlockY();
-        World currentWorld = event.getTo().getWorld();
-        if (currentY < 0 || currentY > currentWorld.getMaxHeight()) {
-            String currentWorldName = event.getTo().getWorld().getName();
+        if (currentY < worldBottom - worldPadding || currentY > worldTop + worldPadding) {
+            World currentWorld = event.getTo().getWorld();
+            String currentWorldName = currentWorld.getName();
+            World targetWorld = null;
             String targetWorldName = null;
             int targetY = 0;
-            World targetWorld = null;
-            if (currentY < 0) {
+            if (currentY < worldBottom - worldPadding) {
                 // go down
                 if (bottomLinks.containsKey(currentWorldName)) {
                     targetWorldName = bottomLinks.get(currentWorldName);
                     targetWorld = Bukkit.getServer().getWorld(targetWorldName);
-                    targetY = currentY + targetWorld.getMaxHeight();
+                    targetY = currentY + worldHeight;
                 }
             } else {
                 // go up
                 if (topLinks.containsKey(currentWorldName)) {
                     targetWorldName = topLinks.get(currentWorldName);
                     targetWorld = Bukkit.getServer().getWorld(targetWorldName);
-                    targetY = currentY - targetWorld.getMaxHeight();
+                    targetY = currentY - worldHeight;
+                    //add padding?
                 }
             }
             if (targetWorld != null) {
@@ -85,6 +93,7 @@ public class Sandwich extends JavaPlugin implements Listener {
                 Location targetLocation = new Location(targetWorld, x, targetY, z);
                 player.teleport(targetLocation);
                 player.setVelocity(velocity);
+                //TODO facing?
             }
         }
     }
