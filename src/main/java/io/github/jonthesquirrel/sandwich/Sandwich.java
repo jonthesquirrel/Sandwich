@@ -47,12 +47,13 @@ public class Sandwich extends JavaPlugin {
 
             }
         }
-        log.info("config topLinks: " + topLinks.toString());
-        log.info("config bottomLinks: " + bottomLinks.toString());
+        log.info("World tops linked to: " + topLinks.toString());
+        log.info("World bottoms linked to: " + bottomLinks.toString());
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+        log.info(event.toString());
         int currentY = event.getTo().getBlockY();
         World currentWorld = event.getTo().getWorld();
         if (currentY < 0 || currentY > currentWorld.getMaxHeight()) {
