@@ -56,6 +56,9 @@ public class Sandwich extends JavaPlugin implements Listener {
 
             }
         }
+        log.info("World padding: " + worldPadding);
+        log.info("World top Y: " + worldTop);
+        log.info("World bottom Y: " + worldBottom);
         log.info("World tops linked to: " + topLinks.toString());
         log.info("World bottoms linked to: " + bottomLinks.toString());
     }
