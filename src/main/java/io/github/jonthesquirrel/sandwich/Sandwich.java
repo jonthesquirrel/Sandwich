@@ -1,10 +1,10 @@
 package io.github.jonthesquirrel.sandwich;
 
-import com.onarandombox.MultiverseCore.api.MVDestination;
-import com.onarandombox.MultiverseCore.api.Teleporter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,7 +23,7 @@ public class Sandwich extends JavaPlugin {
     public void onEnable() {
         //load config
         config = this.getConfig();
-        //TODO don't allow null values in top and bottom links maps
+        //TODO don't allow keys with null values in top and bottom links maps (might cause problems with logic later)
         topLinks = new HashMap<String, String>();
         bottomLinks = new HashMap<String, String>();
         if (config.getConfigurationSection("worlds") == null) {
@@ -48,28 +48,37 @@ public class Sandwich extends JavaPlugin {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        int y = event.getTo().getBlockY();
+        int currentY = event.getTo().getBlockY();
         World currentWorld = event.getTo().getWorld();
-        if (y < 0 || y > currentWorld.getMaxHeight()) {
+        if (currentY < 0 || currentY > currentWorld.getMaxHeight()) {
             String currentWorldName = event.getTo().getWorld().getName();
             String targetWorldName = null;
-            if (y < 0) {
+            int targetY = 0;
+            World targetWorld = null;
+            if (currentY < 0) {
                 // go down
                 if (bottomLinks.containsKey(currentWorldName)) {
                     targetWorldName = bottomLinks.get(currentWorldName);
+                    targetWorld = Bukkit.getServer().getWorld(targetWorldName);
+                    targetY = currentY - targetWorld.getMaxHeight();
                 }
             } else {
                 // go up
                 if (topLinks.containsKey(currentWorldName)) {
                     targetWorldName = topLinks.get(currentWorldName);
+                    targetWorld = Bukkit.getServer().getWorld(targetWorldName);
+                    targetY = currentY + targetWorld.getMaxHeight();
                 }
             }
-            if (targetWorldName != null) {
+            if (targetWorld != null) {
+                Player player = event.getPlayer();
                 int x = event.getTo().getBlockY();
                 int z = event.getTo().getBlockY();
                 Vector velocity = event.getPlayer().getVelocity();
+                Location targetLocation = new Location(targetWorld, x, targetY, z);
+                player.teleport(targetLocation);
+                player.setVelocity(velocity);
             }
-        //TODO: teleport
         }
     }
 
