@@ -1,10 +1,14 @@
 package io.github.jonthesquirrel.sandwich;
 
+import com.onarandombox.MultiverseCore.api.MVDestination;
+import com.onarandombox.MultiverseCore.api.Teleporter;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +22,10 @@ public class Sandwich extends JavaPlugin {
 
     public void onEnable() {
         //load config
-
         config = this.getConfig();
+        //TODO don't allow null values in top and bottom links maps
         topLinks = new HashMap<String, String>();
         bottomLinks = new HashMap<String, String>();
-
         if (config.getConfigurationSection("worlds") == null) {
             config.createSection("worlds");
         }
@@ -45,7 +48,29 @@ public class Sandwich extends JavaPlugin {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-
+        int y = event.getTo().getBlockY();
+        World currentWorld = event.getTo().getWorld();
+        if (y < 0 || y > currentWorld.getMaxHeight()) {
+            String currentWorldName = event.getTo().getWorld().getName();
+            String targetWorldName = null;
+            if (y < 0) {
+                // go down
+                if (bottomLinks.containsKey(currentWorldName)) {
+                    targetWorldName = bottomLinks.get(currentWorldName);
+                }
+            } else {
+                // go up
+                if (topLinks.containsKey(currentWorldName)) {
+                    targetWorldName = topLinks.get(currentWorldName);
+                }
+            }
+            if (targetWorldName != null) {
+                int x = event.getTo().getBlockY();
+                int z = event.getTo().getBlockY();
+                Vector velocity = event.getPlayer().getVelocity();
+            }
+        //TODO: teleport
+        }
     }
 
 }
