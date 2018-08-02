@@ -1,6 +1,5 @@
 name: Sandwich
 main: io.github.jonthesquirrel.sandwich.Sandwich
-author: [jonthesquirrel]
-depend: [Multiverse-Core]
+author: jonthesquirrel
 version: ${project.version}
-description: Connect Multiverse worlds vertically
+description: Connect worlds vertically
