@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-public class Sandwich extends JavaPlugin {
+public class Sandwich extends JavaPlugin implements Listener {
 
     private FileConfiguration config;
     private Map<String, String> topLinks;
@@ -25,6 +26,7 @@ public class Sandwich extends JavaPlugin {
     @Override
     public void onEnable() {
         log = getLogger();
+        getServer().getPluginManager().registerEvents(this, this);
         //load config
         config = this.getConfig();
         //TODO don't allow keys with null values in top and bottom links maps (might cause problems with logic later)
